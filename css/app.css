@@ -81,13 +81,20 @@ h1 {
     font-size: 33px;
 }
 
+/* prevent the user from selecting the same card twice*/
+
+.deck .card.disable {
+    pointer-events: none;
+    opacity: 0.9;
+}
+
 /*
  * Styles for the Score Panel
  */
 
 .score-panel {
-    text-align: left;
-    width: 345px;
+    text-align: center;
+    width: 350px;
     margin-bottom: 10px;
 }
 
@@ -95,6 +102,11 @@ h1 {
     margin: 0;
     padding: 0;
     display: inline-block;
+    margin: 0 5px 0 0;
+}
+
+.score-panel .timer {
+    float: center;
     margin: 0 5px 0 0;
 }
 
