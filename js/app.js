@@ -73,6 +73,9 @@ function startGame() {
     let star3 = document.getElementById('star3');
     star3.style.color = '';
     starRate = 0;
+
+    //reset matchedCounter
+    matchedCounter = 0;
 }
 
 //Flip Cards when clicked
@@ -170,21 +173,26 @@ const starRating = function () {
 const winGame = function () {
     if (matchedCounter === 8) {
         starRating();
+        clearInterval(timeInterval);
+        timerCounter = document.querySelector('.timer');
+        timerCounter.innerHTML = `<strong>${hr}:Hr</strong><strong>${min}:Min</strong><strong>${sec}:Sec</strong>`;
 
         // The Modal from https://www.w3schools.com/howto/howto_css_modals.asp
         let modal = document.getElementById('myModal');
         let modalContent = document.querySelector('.modal-content')
-        let htmlTextToAdd = `Congratulations, you Won with ${moves} Moves, and ${starRate} Star(s)`;
+        let htmlTextToAdd = `Congratulations, you Won with ${moves} Moves, ${starRate} Star(s). Your Time was: ${hr}:Hr,${min}:Min,${sec}:Sec`;
         modalContent.insertAdjacentHTML('beforeend', htmlTextToAdd);
 
         //create "Play Again" button
-        let btnToAdd = `<button id="myBtn">Play Again</button>`
+        let btnToAdd = `<br/><button id="myBtn">Play Again</button>`
         modalContent.insertAdjacentHTML('beforeend', btnToAdd);
         modal.style.display = "block";
 
         // When the user clicks the button, reset the game
         let btn = document.getElementById("myBtn");
         btn.onclick = function () {
+            let modalContent = document.querySelector('.modal-content')
+            modalContent.innerHTML = '';
             modal.style.display = "none";
             startGame();
         }
