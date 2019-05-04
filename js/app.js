@@ -20,10 +20,10 @@ let hr = 0;
 var timeInterval;
 let timerCounter = document.querySelector('.timer');
 
-// declare variables for star icons
-//let starIcon = document.getElementById('star1')
+// Star rate variables
+var starRate;
 
-//Shuffle function from http://stackoverflow.com/a/2450976
+// Shuffle function from http://stackoverflow.com/a/2450976
 function shuffle(array) {
     var currentIndex = array.length, temporaryValue, randomIndex;
 
@@ -72,6 +72,7 @@ function startGame() {
     star2.style.color = '';
     let star3 = document.getElementById('star3');
     star3.style.color = '';
+    starRate = 0;
 }
 
 //Flip Cards when clicked
@@ -84,7 +85,6 @@ const openedCard = function () {
     openCards.push(this);
     if (openCards.length === 2) {
         movesCount();
-
         if (openCards[0].type == openCards[1].type) {
             matched();
         }
@@ -138,9 +138,6 @@ function timer() {
             timerCounter.innerHTML = `<strong>${hr}:Hr</strong><strong>${min}:Min</strong><strong>${sec}:Sec</strong>`;
         }, 1000);
     }
-    else if (moves == 0) {
-        clearInterval(timeInterval);
-    }
 }
 
 // Star Rating function
@@ -152,30 +149,46 @@ const starRating = function () {
         star2.style.color = 'red';
         let star3 = document.getElementById('star3');
         star3.style.color = 'red';
+        starRate = 3;
     }
-
     else if (moves <= 15) {
         let star1 = document.getElementById('star1');
         star1.style.color = 'red';
         let star2 = document.getElementById('star2');
         star2.style.color = 'red';
+        starRate = 2;
     }
-
     else if (moves >= 16) {
         let star1 = document.getElementById('star1');
         star1.style.color = 'red';
+        starRate = 1;
     }
 
 }
+
 // Winning the game modal (not complete)
 const winGame = function () {
     if (matchedCounter === 8) {
+        starRating();
 
-        setTimeout(function () {
-            starRating();
-            alert('you won the Game, Congrats');
-            matchedCounter = 0;
-        }, 1000);
+        // The Modal from https://www.w3schools.com/howto/howto_css_modals.asp
+        let modal = document.getElementById('myModal');
+        let modalContent = document.querySelector('.modal-content')
+        let htmlTextToAdd = `Congratulations, you Won with ${moves} Moves, and ${starRate} Star(s)`;
+        modalContent.insertAdjacentHTML('beforeend', htmlTextToAdd);
+
+        //create "Play Again" button
+        let btnToAdd = `<button id="myBtn">Play Again</button>`
+        modalContent.insertAdjacentHTML('beforeend', btnToAdd);
+        modal.style.display = "block";
+
+        // When the user clicks the button, reset the game
+        let btn = document.getElementById("myBtn");
+        btn.onclick = function () {
+            modal.style.display = "none";
+            startGame();
+        }
+        matchedCounter = 0;
     }
 }
 
